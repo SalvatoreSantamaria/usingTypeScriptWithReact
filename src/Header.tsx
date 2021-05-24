@@ -10,7 +10,7 @@ interface HeaderProps {
   buttonText?: string;
 }
 
-//Movie Interface 2: 
+//Movie Interface 1: 
 interface Movie {
   title: string,
   date: string,
@@ -31,7 +31,7 @@ function Header(props: HeaderProps) {
   const [count, setCount] = useState<number | null>(0)
 
   const increment = () => {
-    setCount(count + 1)
+    setCount(count + 1) // count has to be a number or null
   }
 
   //Movie Interface 2: Setting to null, because we are simulating an api call to load these movies
