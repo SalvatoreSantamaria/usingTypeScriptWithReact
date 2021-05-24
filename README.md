@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -12,35 +12,108 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
-You will also see any lint errors in the console.
+You will also see any lint errors in the console. -->
 
-### `yarn test`
+- Notes take from React and Typescript: Getting started https://www.youtube.com/watch?v=I9jfsIRnySs 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- See video for take about defining functional components, like
+## Two different way to define functional components:
 
-### `yarn build`
+1
+Defining `what Heading returns` - a React.ReactNode
+```
+function Heading(): React.ReactNode {
+  return <h1>My Website Heading</h1>
+}
+Heading() <!-- is returning a React.ReactNode -->
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2
+Written as a function expression
+```
+const OtherHeading: React.FC = () => <h1>My Website Heading</h1>
+OtherHeadign() <!-- is returning a FunctionalComponent -->
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Interface Example 1
 
-### `yarn eject`
+Interface 1: Defining the HeaderProps
+__In Header.tsx__
+Adding the `?` means that it is optional and NOT a required property
+```
+interface HeaderProps {
+  buttonText?: string;
+}
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Interface 2 and 3: The props that header are taking in require the interface HeaderProps buttonText: string
+__In Header.tsx__
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+// Interface 2: The props that header are taking in require the interface HeaderProps buttonText: string
+function Header(props: HeaderProps) { // DESTRUCTURED VERSION: function Header({ HeaderProps }) {
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  return (
+    <div>
+      <h1>Header</h1>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+      {/* Interface 3: will now show the string passed from App.tsx */}
+      <button>{props.buttonText}</button> {/* DESTRUCTURED VERSION: <button>{buttonText}</button> */}
 
-## Learn More
+      <div>
+        <button onClick={increment}>{props.buttonText}</button>
+        <p>{count}</p>
+      </div>
+    </div>
+  );
+}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+// Interface 4: 
+In App.ts:
+```
+function App() {
+  return (
+    <div className="App">
+      {/* Interface 4: Error if not passing in props of type string */}
+    <Header />
+      {/* Pass in the button text correctly like below */}
+    <Header buttonText="Click Me!" />
+    </div>
+  );
+}
+export default App;
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Interface Example 2
+
+Movie Interface 1: 
+```
+interface Movie {
+  title: string,
+  date: string,
+  rating: string,
+  description: string,
+}
+```
+
+Movie Interface 2: Setting to null, because we are simulating an api call to load these movies
+setting it to be a movie object OR it to be null to start with
+```
+const [movie, setMovie] = useState<Movie | null>(null)
+```
+
+  ---
+
+## Using State 
+useState is defined as being either a number OR a null value
+
+```
+const [count, setCount] = useState<number | null>(0)
+
+const increment = () => {
+  setCount(count + 1) // count has to be a number or null
+}
+```
